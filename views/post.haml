@@ -8,7 +8,7 @@
     =post.body_html
   -if admin?
     .edit
-      %a{:href => post.url}="edit"
+      %a{:href => "#{post.url}edit"}="edit"
 
 - if Blog.disqus_shortname
   #disqus_thread

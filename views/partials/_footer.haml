@@ -1,4 +1,5 @@
 #footer
   #legal
     ="Copyright Adrian Titus"
-    %a{:href => "/auth"}="Log in"
+    -unless admin?
+      %a{:href => "/auth"}="Log in"
