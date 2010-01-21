@@ -13,7 +13,7 @@ configure do
 		:title => 'Adrian Titus',
 		:author => 'adrian',
 		:url_base => 'http://localhost:9393/',
-		:admin_password => 'password',
+		:admin_password => 'lesher99',
 		:admin_cookie_key => 'scanty_admin',
 		:admin_cookie_value => '51d6d976913ace58',
 		:disqus_shortname => nil
