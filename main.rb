@@ -105,7 +105,7 @@ end
 ### Admin
 
 get '/auth' do
-	erb :auth
+	haml :auth
 end
 
 post '/auth' do
