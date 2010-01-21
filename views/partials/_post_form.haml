@@ -1,0 +1,11 @@
+.postzoom
+  %h2{:class => "title"}
+    %input{:type => "text", :name => "title", :value => "#{post.title}"}
+  %p{:class => "meta"}
+    %input{:type => "text", :name => "tags", :value => "#{post.tags}"}
+  %p{:class => "meta"}="#{post.created_at}"
+  .entry
+    %textarea{:name => "body"}
+      =post.body
+  .edit
+    %input{:type => "submit", :value => "Save"}

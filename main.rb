@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'haml'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/vendor/sequel'
 require 'sequel'
@@ -9,10 +10,10 @@ configure do
 
 	require 'ostruct'
 	Blog = OpenStruct.new(
-		:title => 'a scanty blog',
-		:author => 'John Doe',
-		:url_base => 'http://localhost:4567/',
-		:admin_password => 'changeme',
+		:title => 'Adrian Titus',
+		:author => 'adrian',
+		:url_base => 'http://localhost:9393/',
+		:admin_password => 'password',
 		:admin_cookie_key => 'scanty_admin',
 		:admin_cookie_value => '51d6d976913ace58',
 		:disqus_shortname => nil
@@ -37,6 +38,21 @@ helpers do
 	def auth
 		stop [ 401, 'Not authorized' ] unless admin?
 	end
+	
+  def partial(template, *args)
+    template_array = template.to_s.split('/')
+    template = template_array[0..-2].join('/') + "/partials/_#{template_array[-1]}"
+    options = args.last.is_a?(Hash) ? args.pop : {}
+    options.merge!(:layout => false)
+    if collection = options.delete(:collection) then
+      collection.inject([]) do |buffer, member|
+        buffer << haml(:"#{template}", options.merge(:layout =>
+        false, :locals => {template_array[-1].to_sym => member}))
+      end.join("\n")
+    else
+      haml(:"#{template}", options)
+    end
+  end
 end
 
 layout 'layout'
@@ -45,7 +61,7 @@ layout 'layout'
 
 get '/' do
 	posts = Post.reverse_order(:created_at).limit(10)
-	erb :index, :locals => { :posts => posts }, :layout => false
+	haml :index, :locals => { :posts => posts }, :layout => false
 end
 
 get '/past/:year/:month/:day/:slug/' do
@@ -95,7 +111,7 @@ end
 
 get '/posts/new' do
 	auth
-	erb :edit, :locals => { :post => Post.new, :url => '/posts' }
+	haml :edit, :locals => { :post => Post.new, :url => '/posts' }
 end
 
 post '/posts' do
@@ -109,7 +125,7 @@ get '/past/:year/:month/:day/:slug/edit' do
 	auth
 	post = Post.filter(:slug => params[:slug]).first
 	stop [ 404, "Page not found" ] unless post
-	erb :edit, :locals => { :post => post, :url => post.url }
+	haml :edit, :locals => { :post => post, :url => post.url }
 end
 
 post '/past/:year/:month/:day/:slug/' do
