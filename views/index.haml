@@ -19,7 +19,7 @@
           %h2{:class => "title"}
             %a{:href => post.url}=post.title
           %p{:class => "meta"}
-            %small=post[:created_at].strftime("%b %d %Y")
+            %small=friendly_time(post[:created_at])
           %p{:class => "meta"}
             %small
               =post.linked_tags

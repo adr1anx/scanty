@@ -53,6 +53,10 @@ helpers do
       haml(:"#{template}", options)
     end
   end
+  
+  def friendly_time(time)
+    time.strftime("%b %d %Y")
+  end
 end
 
 layout 'layout'
@@ -68,7 +72,7 @@ get '/past/:year/:month/:day/:slug/' do
 	post = Post.filter(:slug => params[:slug]).first
 	stop [ 404, "Page not found" ] unless post
 	@title = post.title
-	erb :post, :locals => { :post => post }
+	haml :post, :locals => { :post => post }
 end
 
 get '/past/:year/:month/:day/:slug' do
@@ -78,14 +82,14 @@ end
 get '/past' do
 	posts = Post.reverse_order(:created_at)
 	@title = "Archive"
-	erb :archive, :locals => { :posts => posts }
+	haml :archive, :locals => { :posts => posts }
 end
 
 get '/past/tags/:tag' do
 	tag = params[:tag]
 	posts = Post.filter(:tags.like("%#{tag}%")).reverse_order(:created_at).limit(30)
 	@title = "Posts tagged #{tag}"
-	erb :tagged, :locals => { :posts => posts, :tag => tag }
+	haml :tagged, :locals => { :posts => posts, :tag => tag }
 end
 
 get '/feed' do

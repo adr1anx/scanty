@@ -1,0 +1,7 @@
+%h1
+  %table{:class => "archive"}
+    - posts.each do |post|
+      %tr
+        %td{:class => "date"}=friendly_time(post.created_at)
+        %td{:class => "title"}
+          %a{:href => post.url}=post.title
