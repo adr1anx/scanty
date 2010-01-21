@@ -11,6 +11,4 @@
           %a{:href => "/"}=Blog.title
     #content
       =yield
-    #footer
-      #legal
-        ="Copyright #{Blog.author}"
+    =partial(:footer)
